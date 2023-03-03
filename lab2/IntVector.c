@@ -36,15 +36,19 @@ void int_vector_free(IntVector *v){
 }
 
 int int_vector_get_item(const IntVector *v, size_t index){
-	if (index >= size){
-		printf("Error")
+	if (index >= v -> size){
+		printf("Error");
 		exit(1);
 	}
 	return v -> data[index];
 }
 
 void int_vector_set_item(IntVector *v, size_t index, int item){
-	int_vector_get_item(v, index) = item;
+	if (index >= v -> size){
+		printf("Error");
+		exit(1);
+	}
+	v->data[index] = item;
 }
 
 size_t int_vector_get_capacity(const IntVector *v){
@@ -64,13 +68,13 @@ int int_vector_push_back(IntVector *v, int item){
 		v -> data = a;
 		v -> capacity *= 2;
 	}
-	vector->data[++(vector->size)] = item;
+	v->data[++(v->size)] = item;
 	return 0;
 }
 
 void int_vector_pop_back(IntVector *v){
-	if (vector -> size != 0)
-		vector -> size--;
+	if (v -> size != 0)
+		v -> size--;
 }
 
 int int_vector_shrink_to_fit(IntVector *v){
@@ -78,17 +82,17 @@ int int_vector_shrink_to_fit(IntVector *v){
 	if (a == NULL)
 		return -1;
 	v -> capacity = v -> size;
-	v -> data = ar;
+	v -> data = a;
 	return 0;
 }
 
 int int_vector_resize(IntVector *v, size_t new_size){
 	if (new_size > v -> size){
 		if (new_size > v-> capacity){
-			int *a = realloc(v -> data, sizeof(int) * (new_size);
+			int *a = realloc(v -> data, sizeof(int) * (new_size));
 			if (a == NULL)
 				return -1;
-			v -> data = 
+			v -> data = a;
 			for (int i = v -> size; i < new_size; i++)
 				v -> data[i] = 0;
 			v -> size = new_size;
@@ -107,7 +111,7 @@ int int_vector_resize(IntVector *v, size_t new_size){
 
 int int_vector_reserve(IntVector *v, size_t new_capacity){
 	if (new_capacity > v-> capacity){
-		int *a = realloc(vector -> data, sizeof(int) * (new_capacity));
+		int *a = realloc(v -> data, sizeof(int) * (new_capacity));
 		if (a == NULL)
 			return -1;
 		v -> data = a;
