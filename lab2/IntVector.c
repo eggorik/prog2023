@@ -84,17 +84,34 @@ int int_vector_shrink_to_fit(IntVector *v){
 
 int int_vector_resize(IntVector *v, size_t new_size){
 	if (new_size > v -> size){
-		int *a = realloc(v -> data, sizeof(int) * (new_size);
+		if (new_size > v-> capacity){
+			int *a = realloc(v -> data, sizeof(int) * (new_size);
+			if (a == NULL)
+				return -1;
+			v -> data = 
+			for (int i = v -> size; i < new_size; i++)
+				v -> data[i] = 0;
+			v -> size = new_size;
+			v -> capacity = new_size;
+		}
+		else {
+			for (int i = v -> size; i < new_size; i++)
+					v -> data[i] = 0;
+		}
+	}
+	else {
+		v -> size = new_size;
+	}		
+	return 0;
+}
+
+int int_vector_reserve(IntVector *v, size_t new_capacity){
+	if (new_capacity > v-> capacity){
+		int *a = realloc(vector -> data, sizeof(int) * (new_capacity));
 		if (a == NULL)
 			return -1;
-		v -> data = 
-		for (int i = v -> size; i < new_size; i++)
-			v -> data[i] = 0;
-		v -> size = new_size;
-		v -> capacity = new_size;
-		}
-	else {
-		for (int i = v -> size; i < new_size; i++)
-			
-	
-	
+		v -> data = a;
+		v -> capacity = new_capacity;
+	}
+	return 0;
+}
