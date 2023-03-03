@@ -4,7 +4,7 @@
 
 IntVector *int_vector_new(size_t initial_capacity){
 	IntVector *p = NULL;
-	vector = malloc(sizeof(IntVector));
+	p = malloc(sizeof(IntVector));
 	if (!p)
 		return NULL;
 	p -> data = malloc(initial_capacity * sizeof(int));
