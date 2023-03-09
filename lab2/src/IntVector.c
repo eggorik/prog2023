@@ -68,7 +68,7 @@ int int_vector_push_back(IntVector *v, int item){
 		v -> data = a;
 		v -> capacity *= 2;
 	}
-	v->data[++(v->size)] = item;
+	v->data[v->size++] = item;
 	return 0;
 }
 
