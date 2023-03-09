@@ -38,7 +38,7 @@ int main()
     }
     printf("\n");
     int_vector_set_item(ar, 7, 121);
-    printf("After set_item(item = 121)\n");
+    printf("After set_item(index = 7, item = 121)\n");
     infoPrint(ar);
     printf("\n");
 
@@ -46,10 +46,18 @@ int main()
     printf("After get_item(item = 7)\nar[7] = %d\n", res);
     printf("\n");
 
+    printf("After push_back(item = 26)\n");
+    int_vector_push_back(ar,26);
+    infoPrint(ar);
+    printf("\n");
+
+
     int_vector_pop_back(ar);
     printf("After pop_back\n");
     infoPrint(ar);
     printf("\n");
+
+    
 
     int_vector_shrink_to_fit(ar);
     printf("After shrink_to_fit\n");
@@ -76,6 +84,7 @@ int main()
     infoPrint(ar);
     printf("\n");
 
+    printf("Copied vector\n");
     IntVector* copy = int_vector_copy(ar);
     infoPrint(copy);
     printf("\n");
