@@ -9,6 +9,7 @@ IntVector *int_vector_new(size_t initial_capacity){
 		return NULL;
 	p -> data = malloc(initial_capacity * sizeof(int));
 	if (!(p->data)){
+		free(p);
 		return NULL;
 	}
 	p -> size = 0;
