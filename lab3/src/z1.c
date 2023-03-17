@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #define N 1000000
 
 uint32_t generate_number()
@@ -50,4 +51,9 @@ uint32_t decode_varint(const uint8_t** bufp)
     }
     *bufp = cur;
     return value;
+}
+
+int main(){
+	srand(time(NULL));
+	return 0;
 }
