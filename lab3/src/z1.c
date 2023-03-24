@@ -53,7 +53,28 @@ uint32_t decode_varint(const uint8_t** bufp)
     return value;
 }
 
+size_t writeAndTakeSize(FILE* uc, FILE* c){
+	int size;
+	
+	return size;
+}
 int main(){
 	srand(time(NULL));
+	
+	FILE* ucfile;
+	FILE* cfile;
+	
+	if ((ucfile = fopen("uncompressed.dat", "wb+")) == NULL){
+		printf("Не удалось открыть uncompressed.dat\n");
+		exit(1);
+	}
+	
+	if ((cfile = fopen("compressed.dat", "wb+")) == NULL){
+		printf("Не удалось открыть compressed.dat\n");
+		exit(1);
+	}
+	
+	size = writeAndTakeSize(ucfile, cfile);		
+		
 	return 0;
 }
