@@ -53,28 +53,74 @@ uint32_t decode_varint(const uint8_t** bufp)
     return value;
 }
 
-size_t writeAndTakeSize(FILE* uc, FILE* c){
-	int size;
-	
-	return size;
+int check_sequence(FILE* uc, FILE* c, size_t size)
+{
+    assert(uc != NULL);
+    assert(c != NULL);
+
+    fseek(uc, 0, SEEK_SET);
+    fseek(c, 0, SEEK_SET);
+    uint32_t dec, ndec;
+    uint8_t* buf = malloc(sizeof(uint8_t) * size);
+    const uint8_t* cur = buf;
+    fread(buf, sizeof(uint8_t), size, c);
+
+    for (int i = 0; i < N; i++) {
+        dec = decode_varint(&cur);
+        fread(&ndec, sizeof(uint32_t), 1, uc);
+        if (ndec != dec) {
+            free(buf);
+            return -1;
+        }
+    }
+    free(buf);
+    return 0;
 }
-int main(){
-	srand(time(NULL));
-	
-	FILE* ucfile;
-	FILE* cfile;
-	
-	if ((ucfile = fopen("uncompressed.dat", "wb+")) == NULL){
-		printf("Не удалось открыть uncompressed.dat\n");
-		exit(1);
-	}
-	
-	if ((cfile = fopen("compressed.dat", "wb+")) == NULL){
-		printf("Не удалось открыть compressed.dat\n");
-		exit(1);
-	}
-	
-	size = writeAndTakeSize(ucfile, cfile);		
-		
-	return 0;
+
+size_t writeAndTakeSize(FILE* uc, FILE* c)
+{
+    assert(uc != NULL);
+    assert(c != NULL);
+    uint8_t buf[4] = {};
+    size_t size = 0;
+    size_t finalsize = 0;
+    for (int i = 0; i < N; i++) {
+        uint32_t num = generate_number();
+        fwrite(&num, sizeof(num), 1, uc);
+        size = encode_varint(num, buf);
+        finalsize += size;
+        fwrite(&num, size, 1, c);
+    }
+    return finalsize;
+}
+int main()
+{
+    srand(time(NULL));
+
+    FILE* ucfile;
+    FILE* cfile;
+
+    if ((ucfile = fopen("uncompressed.dat", "wb+")) == NULL) {
+        printf("Не удалось открыть uncompressed.dat\n");
+        exit(1);
+    }
+
+    if ((cfile = fopen("compressed.dat", "wb+")) == NULL) {
+        printf("Не удалось открыть compressed.dat\n");
+        exit(1);
+    }
+
+    size_t size = writeAndTakeSize(ucfile, cfile);
+
+    printf("Size file without encoding: %d\nSize file with encoding: %ld\n",
+           N * 4,
+           size);
+
+    size_t fsize = ftell(cfile);
+
+    if (check_sequence(ucfile, cfile, fsize) == -1)
+        printf("Последовательность неверна");
+    else
+        printf("Последовательность верна");
+    return 0;
 }
